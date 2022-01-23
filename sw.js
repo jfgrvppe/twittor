@@ -1,8 +1,8 @@
 //IMPORTS
 importScripts("js/sw-utils.js");
 
-const STATIC_CACHE = "static_v3";
-const STATIC_DYNAMIC = "dynamic_v1";
+const STATIC_CACHE = "static_v4";
+const DYNAMIC_CACHE = "dynamic_v2";
 const INMUTABLE_CACHE = "inmutable_v1";
 
 const APP_SHELL = [
@@ -45,6 +45,9 @@ self.addEventListener("activate", (e) => {
             if (key !== STATIC_CACHE && key.includes("static")) {
                 return caches.delete(key);
             }
+            if (key !== DYNAMIC_CACHE && key.includes("dynamic")) {
+                return caches.delete(key);
+            }
         });
     });
 
@@ -59,7 +62,7 @@ self.addEventListener("fetch", (e) => {
         } else {
             return fetch(e.request).then((newResp) => {
                 return actualizaCacheDynamico(
-                    STATIC_DYNAMIC,
+                    DYNAMIC_CACHE,
                     e.request,
                     newResp
                 );
